@@ -20,7 +20,7 @@ public class Party extends BaseId {
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "mountain_id")
     private Mountain mountain;
-    @OneToMany(mappedBy = "party", cascade = CascadeType.PERSIST, orphanRemoval = true,fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.PERSIST)
     private Set<Climber> climbers;
 
     public Party() {
@@ -47,7 +47,7 @@ public class Party extends BaseId {
     public void addClimber(Climber climber){
         if (climber==null) throw new IllegalArgumentException("climber null");
         climbers.add(climber);
-        climber.setParty(this);
+        climber.getParties().add(this);
     }
     @Override
     public String toString() {

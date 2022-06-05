@@ -21,6 +21,7 @@ public class App {
         Party party = new Party(true);
         Party party1=new Party(false);
         party.addClimber(climber1);
+        party1.addClimber(climber1);
         party.getClimbers().add(climber2);
         climber2.setParty(party);
 

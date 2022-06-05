@@ -4,7 +4,10 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NonNull;
 
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Objects;
+import java.util.Set;
 
 
 @Entity
@@ -20,14 +23,23 @@ public class Climber extends BaseId {
     @JoinColumn(name = "party_id")
     private Party party;
 
+    @ManyToMany(mappedBy = "climbers",cascade = CascadeType.PERSIST)
+    private Set<Party> parties;
+
+    public void setParties(Set<Party> parties) {
+        this.parties = parties;
+    }
+
     public void setParty(Party party) {
         this.party = party;
     }
 
 
     public Climber() {
+        parties=new HashSet<>();
     }
     public Climber(String name, String homeAddress) {
+        parties=new HashSet<>();
         setName(name);
         setHomeAddress(homeAddress);
     }
@@ -41,7 +53,11 @@ public class Climber extends BaseId {
             throw new IllegalArgumentException("Значение homeAddress должно быть не менее 5 символов");
         this.homeAddress = homeAddress;
     }
-
+    public void addParty(Party party) {
+        if (party == null) throw new IllegalArgumentException("party null");
+        parties.add(party);
+        party.getClimbers().add(this);
+    }
     @Override
     public String toString() {
         return getClass().getSimpleName() + "(" +
