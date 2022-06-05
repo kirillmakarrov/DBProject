@@ -18,22 +18,21 @@ public class App {
         Climber climber3 = new Climber("Climber3", "China");
         Climber climber4 = new Climber("Climber4", "Japan");
         Mountain elbrus = new Mountain("Эльбрус", "Russia", 7000);
-        Mountain ural = new Mountain("Урал", "Russia", 5000);
-        Set<Climber> climbers = new HashSet<>();
-        Set<Climber> climbers1 = new HashSet<>();
-        climbers.add(climber1);
-        climbers.add(climber2);
-        climbers1.add(climber3);
-        climbers1.add(climber4);
-        Party party = new Party(true, elbrus, climbers);
-        climber4.setParty(party);
-        Party party1=new Party(false,elbrus,climbers1);
+        Party party = new Party(true);
+        Party party1=new Party(false);
+        party.addClimber(climber1);
+        party.getClimbers().add(climber2);
+        climber2.setParty(party);
+
+        party.addClimber(climber3);
+        party1.addClimber(climber4);
+        elbrus.addParty(party);
+        elbrus.addParty(party1);
 
         /*try (EntityManagerFactory factory = Persistence.createEntityManagerFactory("orm");
              EntityManager manager = factory.createEntityManager()){
             manager.getTransaction().begin();
             manager.persist(party);
-            manager.persist(climber4);
             manager.getTransaction().commit();
         }*/
         EntityManagerFactory factory = Persistence.createEntityManagerFactory("orm");
@@ -41,6 +40,7 @@ public class App {
         manager.getTransaction().begin();
         manager.persist(party);
         manager.persist(party1);
+        manager.persist(climber3);
         manager.getTransaction().commit();
 
     }

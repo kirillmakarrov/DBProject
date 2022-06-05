@@ -1,21 +1,22 @@
 package org.exam4.entity;
 
 import jakarta.persistence.*;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.ToString;
+import lombok.NonNull;
 
-@ToString
+import java.util.Objects;
+
+
 @Entity
 @Getter
-@EqualsAndHashCode
+@NonNull
 public class Climber extends BaseId {
     @Column(nullable = false)
     private String name;
     @Column(nullable = false)
     private String homeAddress;
 
-    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @JoinColumn(name = "party_id")
     private Party party;
 
@@ -41,5 +42,24 @@ public class Climber extends BaseId {
         this.homeAddress = homeAddress;
     }
 
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "(" +
+                "id = " + getId() + ", " +
+                "name = " + getName() + ", " +
+                "homeAddress = " + getHomeAddress() + ")";
+    }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Climber climber = (Climber) o;
+        return Objects.equals(getId(), climber.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }
